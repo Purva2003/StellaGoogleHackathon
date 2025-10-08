@@ -83,4 +83,21 @@ This project is licensed under the MIT License.
 
 ---
 
-*This README is a living document and may be updated as the project progresses.*
+STRUCTURE:
+
+Stella/
+├── assets/
+│   ├── icon_128.png        # The 128x128 pixel extension icon for store listing.
+│   ├── icon_48.png         # The 48x48 pixel icon for the browser toolbar.
+│   └── trigger_icon.png    # The small, temporary icon that appears on text selection.
+├── css/
+│   ├── side_panel.css      # The stylesheet for the side panel's user interface.
+│   └── content_styles.css  # Styles for the trigger icon and any other injected elements.
+├── html/
+│   └── side_panel.html     # The HTML page for the side panel interface.
+├── js/
+│   ├── background.js       # The service worker managing events, AI calls, and APIs.
+│   ├── content.js          # The script injected into web pages to detect selections.
+│   └── side_panel.js       # The script for the side panel's UI logic.
+├── manifest.json           # The core configuration file for the extension.
+└── README.md               # The project description and instructions.
