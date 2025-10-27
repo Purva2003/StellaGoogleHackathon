@@ -27,3 +27,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Google keys and service account
+stella-extension-a18d5cdd9a19.json
+stella-extension-a18d5cdd9a19.json:Zone.Identifier
+server/service-account.json
+
+# Server
+server/node_modules
+server/.env
+
+# Extension
+extension/node_modules

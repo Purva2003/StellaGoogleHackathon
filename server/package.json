@@ -1,0 +1,21 @@
+{
+  "name": "stella-server",
+  "version": "1.0.0",
+  "description": "Backend server for Stella AI Assistant with Vertex AI integration",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["vertex-ai", "gemini", "express"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "google-auth-library": "^9.0.0",
+    "@google-cloud/aiplatform": "^3.11.0"
+  }
+}
