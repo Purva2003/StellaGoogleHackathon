@@ -7,7 +7,7 @@
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-export async function searchVertexAI(query: string): Promise<string> {
+export async function searchGemini(query: string): Promise<string> {
   try {
     if (!query || !query.trim()) {
       throw new Error('Query cannot be empty');

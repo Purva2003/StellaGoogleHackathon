@@ -1,12 +1,16 @@
 // API Response Types
 
-export interface VertexAIResponse {
-  predictions: Array<{
-    content: string;
-    safetyAttributes?: {
-      categories: string[];
-      scores: number[];
+export interface GeminiResponse {
+  candidates: Array<{
+    content: {
+      parts: Array<{
+        text: string;
+      }>;
     };
+    safetyRatings?: Array<{
+      category: string;
+      probability: string;
+    }>;
   }>;
 }
 
@@ -55,11 +59,11 @@ export interface CustomSearchResponse {
 }
 
 export interface SearchResults {
-  vertexAI: string | null;
+  gemini: string | null;
   youtube: YouTubeVideo[];
   customSearch: CustomSearchResult[];
   errors: {
-    vertexAI?: string;
+    gemini?: string;
     youtube?: string;
     customSearch?: string;
   };

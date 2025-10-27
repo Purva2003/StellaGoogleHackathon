@@ -12,7 +12,7 @@ Students and researchers often face the challenge of efficiently processing and 
 
 ## The Solution: Stella
 
-**Stella** acts as a guide in a sea of information. The extension uses advanced on-device AI, including the **Gemini Nano** model, to streamline learning. By highlighting text, Stella provides learning tools in a side panel to help users focus on their research.
+**Stella** acts as a guide in a sea of information. The extension uses **Google Gemini AI** to streamline learning. By searching or highlighting text, Stella provides learning tools in a side panel to help users focus on their research.
 
 ## Key Features
 
@@ -27,14 +27,18 @@ Students and researchers often face the challenge of efficiently processing and 
 
 **Built for the Google Chrome Built-in AI Challenge 2025**
 
-Stella is powered by the latest on-device AI technology available through the Chrome platform.
+Stella is a serverless Chrome extension powered by Google Gemini AI.
 
-*   **Frontend:** HTML, CSS, JavaScript
-*   **Backend:** Service Worker managing API calls.
+*   **Frontend:** React + TypeScript + Vite
+*   **Extension:** Chrome Manifest V3 with service worker
 *   **APIs:**
-    *   Google Gemini API (via Prompt API) for summarization, translation, and extended explanations.
-    *   YouTube Data API for finding and fetching video content.
-*   **Architecture:** Manifest V3 for a secure and performant extension.
+    *   Google Gemini API for AI-powered answers and explanations
+    *   YouTube Data API v3 for finding relevant video content
+    *   Google Custom Search API for related web pages
+*   **Architecture:**
+    *   No backend server required - all API calls made directly from extension
+    *   Environment variables for secure API key management
+    *   Side panel UI for non-intrusive user experience
 
 ## How to Use
 
@@ -45,20 +49,51 @@ Stella is powered by the latest on-device AI technology available through the Ch
 
 ## Installation for Developers
 
-If you want to contribute or test the extension during the hackathon:
+### Prerequisites
+- Node.js 16+ and npm
+- Google Cloud account with API keys configured
+
+### Setup Instructions
 
 1.  **Clone the repository:**
-    `git clone https://github.com/your-username/Stella.git`
-2.  **Enable Developer Mode** in Chrome:
-    *   Navigate to `chrome://extensions`.
-    *   Toggle **Developer Mode** on.
-3.  **Load the extension:**
-    *   Click **"Load unpacked"**.
-    *   Select the `Stella` directory.
-4.  **Ensure AI Flags are Enabled** in Chrome Canary:
-    *   Visit `chrome://flags`.
-    *   Search for and enable **"Prompt API for Gemini Nano"**.
-5.  **Use** the extension on any webpage!
+    ```bash
+    git clone https://github.com/your-username/StellaGoogleHackathon.git
+    cd StellaGoogleHackathon/extension
+    ```
+
+2.  **Set up environment variables:**
+    ```bash
+    cp .env.example .env
+    ```
+    Then edit `.env` and add your API keys:
+    - `VITE_GEMINI_API_KEY` - Get from https://aistudio.google.com/app/apikey
+    - `VITE_YOUTUBE_API_KEY` - Get from Google Cloud Console
+    - `VITE_CUSTOM_SEARCH_API_KEY` - Get from Google Cloud Console
+    - `VITE_CUSTOM_SEARCH_ENGINE_ID` - Create at https://programmablesearchengine.google.com/
+
+3.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+4.  **Build the extension:**
+    ```bash
+    npm run build
+    ```
+
+5.  **Load in Chrome:**
+    *   Navigate to `chrome://extensions`
+    *   Toggle **Developer Mode** on
+    *   Click **"Load unpacked"**
+    *   Select the `extension/dist` directory
+
+6.  **Start using Stella!**
+
+### Development Mode
+For hot-reload during development:
+```bash
+npm run dev
+```
 
 ## Development Roadmap
 
@@ -81,23 +116,35 @@ This project is licensed under the MIT License.
 *   Built for the **Google Chrome Built-in AI Challenge 2025**.
 *   Developed with the support of the Devpost community.
 
----
+## Project Structure
 
-STRUCTURE:
+```
+StellaGoogleHackathon/
+├── extension/                    # Chrome extension source
+│   ├── src/
+│   │   ├── services/
+│   │   │   ├── gemini.ts        # Gemini AI API integration
+│   │   │   ├── youtube.ts       # YouTube Data API integration
+│   │   │   └── customSearch.ts  # Google Custom Search integration
+│   │   ├── background/
+│   │   │   └── service-worker.ts # Chrome extension service worker
+│   │   ├── types/
+│   │   │   └── api.ts           # TypeScript type definitions
+│   │   ├── App.tsx              # Main React application
+│   │   └── main.tsx             # Entry point
+│   ├── icons/                   # Extension icons
+│   ├── manifest.json            # Chrome extension manifest
+│   ├── .env.example             # Template for environment variables
+│   └── package.json             # Dependencies and scripts
+├── .gitignore                   # Git ignore rules (protects API keys)
+└── README.md                    # This file
+```
 
-Stella/
-├── assets/
-│   ├── icon_128.png        # The 128x128 pixel extension icon for store listing.
-│   ├── icon_48.png         # The 48x48 pixel icon for the browser toolbar.
-│   └── trigger_icon.png    # The small, temporary icon that appears on text selection.
-├── css/
-│   ├── side_panel.css      # The stylesheet for the side panel's user interface.
-│   └── content_styles.css  # Styles for the trigger icon and any other injected elements.
-├── html/
-│   └── side_panel.html     # The HTML page for the side panel interface.
-├── js/
-│   ├── background.js       # The service worker managing events, AI calls, and APIs.
-│   ├── content.js          # The script injected into web pages to detect selections.
-│   └── side_panel.js       # The script for the side panel's UI logic.
-├── manifest.json           # The core configuration file for the extension.
-└── README.md               # The project description and instructions.
+## Security Notes
+
+**IMPORTANT:** This repository uses environment variables for API keys.
+
+- Never commit `.env` files with real API keys
+- Use `.env.example` as a template
+- Rotate any exposed API keys immediately
+- Set up API key restrictions in Google Cloud Console

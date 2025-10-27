@@ -12,10 +12,14 @@ dist
 dist-ssr
 *.local
 
-# Environment variables
+# Environment variables - NEVER commit API keys!
 .env
 .env.local
 .env.*.local
+extension/.env
+# But DO allow .env.example templates
+!.env.example
+!**/.env.example
 
 # Editor directories and files
 .vscode/*
@@ -28,14 +32,16 @@ dist-ssr
 *.sln
 *.sw?
 
-# Google keys and service account
-stella-extension-a18d5cdd9a19.json
-stella-extension-a18d5cdd9a19.json:Zone.Identifier
-server/service-account.json
-
-# Server
-server/node_modules
-server/.env
+# Google keys and service account - CRITICAL: Never commit these!
+*.json
+!package.json
+!package-lock.json
+!tsconfig*.json
+!manifest.json
+*service-account*.json
+stella-extension-*.json
+*.json:Zone.Identifier
 
 # Extension
 extension/node_modules
+extension/dist
