@@ -19,7 +19,7 @@ export default defineConfig({
 
   // Define output directory for the extension build
   build: {
-    outDir: resolve(__dirname, '..', 'dist'),
+    outDir: resolve(__dirname, 'dist'),
     emptyOutDir: true,
   },
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { searchVertexAI } from "./services/vertexAI";
+import { searchGemini } from "./services/gemini";
 import { searchYouTube } from "./services/youtube";
 import { searchCustomSearch } from "./services/customSearch";
 import type { SearchResults } from "./types/api";
@@ -15,25 +15,25 @@ function App() {
 
     setLoading(true);
     const searchResults: SearchResults = {
-      vertexAI: null,
+      gemini: null,
       youtube: [],
       customSearch: [],
       errors: {},
     };
 
     // Call all three APIs in parallel
-    const [vertexAIResult, youtubeResult, customSearchResult] =
+    const [geminiResult, youtubeResult, customSearchResult] =
       await Promise.allSettled([
-        searchVertexAI(query),
+        searchGemini(query),
         searchYouTube(query),
         searchCustomSearch(query),
       ]);
 
-    // Process Vertex AI results
-    if (vertexAIResult.status === "fulfilled") {
-      searchResults.vertexAI = vertexAIResult.value;
+    // Process Gemini AI results
+    if (geminiResult.status === "fulfilled") {
+      searchResults.gemini = geminiResult.value;
     } else {
-      searchResults.errors.vertexAI = vertexAIResult.reason.message;
+      searchResults.errors.gemini = geminiResult.reason.message;
     }
 
     // Process YouTube results
@@ -64,7 +64,7 @@ function App() {
     <div className="app-container">
       <header className="header">
         <h1>Stella AI Assistant</h1>
-        <p>Search across Vertex AI, YouTube, and the Web</p>
+        <p>Search across Gemini AI, YouTube, and the Web</p>
       </header>
 
       <div className="search-container">
@@ -95,13 +95,13 @@ function App() {
 
       {results && !loading && (
         <div className="results-container">
-          {/* Vertex AI Results */}
+          {/* Gemini AI Results */}
           <section className="result-section">
-            <h2>AI Answer (Vertex AI)</h2>
-            {results.errors.vertexAI ? (
-              <div className="error">Error: {results.errors.vertexAI}</div>
-            ) : results.vertexAI ? (
-              <div className="ai-answer">{results.vertexAI}</div>
+            <h2>AI Answer (Gemini AI)</h2>
+            {results.errors.gemini ? (
+              <div className="error">Error: {results.errors.gemini}</div>
+            ) : results.gemini ? (
+              <div className="ai-answer">{results.gemini}</div>
             ) : (
               <div className="no-results">No response</div>
             )}
