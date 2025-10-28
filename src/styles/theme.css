@@ -1,0 +1,192 @@
+/* Dark Azure / Bright Blue Theme - Color Variables */
+:root {
+  /* Primary Colors */
+  --color-dark-azure: #003558;
+  --color-dark-azure-light: #004a75;
+  --color-dark-azure-lighter: #006299;
+  --color-bright-blue: #00b4ff;
+  --color-bright-blue-light: #33c5ff;
+  --color-bright-blue-dark: #0090cc;
+  --color-off-white: #f8fbff;
+  --color-off-white-dark: #e8f0f7;
+
+  /* Glass-morphism Colors */
+  --glass-light: rgba(248, 251, 255, 0.05);
+  --glass-medium: rgba(248, 251, 255, 0.1);
+  --glass-dark: rgba(0, 53, 88, 0.9);
+  --glass-darker: rgba(0, 53, 88, 0.95);
+
+  /* Background Colors */
+  --bg-primary: #000f1a;
+  --bg-secondary: #001420;
+  --bg-card: var(--glass-dark);
+  --bg-card-hover: var(--glass-darker);
+
+  /* Text Colors */
+  --text-primary: var(--color-off-white);
+  --text-secondary: rgba(248, 251, 255, 0.7);
+  --text-muted: rgba(248, 251, 255, 0.5);
+  --text-accent: var(--color-bright-blue);
+
+  /* Border Colors */
+  --border-glass: rgba(248, 251, 255, 0.15);
+  --border-accent: var(--color-bright-blue);
+
+  /* Shadow Values */
+  --shadow-glass: 0 8px 32px 0 rgba(0, 53, 88, 0.37);
+  --shadow-glass-heavy: 0 12px 48px 0 rgba(0, 53, 88, 0.5);
+  --shadow-header: 0 4px 16px rgba(0, 180, 255, 0.2);
+  --shadow-card-hover: 0 16px 64px rgba(0, 180, 255, 0.3);
+  --shadow-glow: 0 0 20px rgba(0, 180, 255, 0.5);
+
+  /* Blur Values */
+  --blur-glass: 16px;
+  --blur-glass-heavy: 24px;
+}
+
+/* Glass-morphism Utility Classes */
+.glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(248, 251, 255, 0.08) 0%,
+    rgba(248, 251, 255, 0.04) 100%
+  );
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-card {
+  background: var(--glass-dark);
+  backdrop-filter: blur(var(--blur-glass-heavy));
+  -webkit-backdrop-filter: blur(var(--blur-glass-heavy));
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-glass);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 180, 255, 0.1) 0%,
+    rgba(0, 53, 88, 0.05) 50%,
+    rgba(0, 180, 255, 0.1) 100%
+  );
+  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glass-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  background: var(--glass-darker);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* Holographic Texture Overlay */
+.holographic-texture {
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic-texture::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 180, 255, 0.03) 0px,
+    rgba(0, 180, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  pointer-events: none;
+  animation: holographic-shift 20s linear infinite;
+}
+
+@keyframes holographic-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(10px, 10px);
+  }
+}
+
+/* Glow Effects */
+.glow-bright-blue {
+  box-shadow: 0 0 20px rgba(0, 180, 255, 0.4),
+              0 0 40px rgba(0, 180, 255, 0.2);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(0, 180, 255, 0.5),
+               0 0 20px rgba(0, 180, 255, 0.3);
+}
+
+/* Smooth Transitions */
+.transition-premium {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.transition-fast {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3D Perspective Container */
+.perspective-container {
+  perspective: 1000px;
+  perspective-origin: center;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 53, 88, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bright-blue);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-bright-blue-light);
+}
+
+/* Selection Styling */
+::selection {
+  background: var(--color-bright-blue);
+  color: var(--color-dark-azure);
+}
+
+::-moz-selection {
+  background: var(--color-bright-blue);
+  color: var(--color-dark-azure);
+}
