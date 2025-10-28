@@ -20,6 +20,10 @@ extension/.env
 # But DO allow .env.example templates
 !.env.example
 !**/.env.example
+# Environment variables - NEVER commit these!
+.env
+.env.local
+.env.production
 
 # Editor directories and files
 .vscode/*
