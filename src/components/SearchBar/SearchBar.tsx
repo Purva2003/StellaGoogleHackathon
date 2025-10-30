@@ -1,18 +1,27 @@
-import React, { useState, type FormEvent } from 'react';
+import React, { useState, useEffect, type FormEvent } from 'react';
 import './SearchBar.css';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
   isLoading?: boolean;
   placeholder?: string;
+  initialQuery?: string;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   isLoading = false,
-  placeholder = "Ask Stella anything..."
+  placeholder = "Ask Stella anything...",
+  initialQuery = ''
 }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(initialQuery);
+
+  // Update query when initialQuery prop changes
+  useEffect(() => {
+    if (initialQuery) {
+      setQuery(initialQuery);
+    }
+  }, [initialQuery]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

@@ -25,5 +25,18 @@
     },
     "action": {
       "default_title": "Open Stella"
-    }
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["src/content/selection-handler.ts"],
+        "run_at": "document_idle"
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["stella-logo.png"],
+        "matches": ["<all_urls>"]
+      }
+    ]
   }

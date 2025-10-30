@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header/Header'
 import SidePanel from './components/SidePanel/SidePanel'
@@ -20,10 +20,45 @@ function App() {
   const [youtubeVideos, setYoutubeVideos] = useState<VideoData[]>([])
   const [searchResults, setSearchResults] = useState<SearchResultData[]>([])
   const [error, setError] = useState<string>('')
+  const [currentQuery, setCurrentQuery] = useState<string>('')
+
+  // Check for stored search query on mount (from text selection)
+  useEffect(() => {
+    const checkForStoredQuery = async () => {
+      try {
+        const result = await chrome.storage.local.get(['searchQuery', 'timestamp']);
+
+        if (result.searchQuery) {
+          const query = result.searchQuery;
+          const timestamp = result.timestamp || 0;
+
+          // Only use queries from the last 5 seconds (to avoid stale queries)
+          const age = Date.now() - timestamp;
+          if (age < 5000) {
+            console.log('Found stored query:', query);
+
+            // Clear the stored query to prevent re-use
+            await chrome.storage.local.remove(['searchQuery', 'timestamp']);
+
+            // Automatically trigger search
+            handleSearch(query);
+          } else {
+            console.log('Stored query too old, ignoring');
+            await chrome.storage.local.remove(['searchQuery', 'timestamp']);
+          }
+        }
+      } catch (err) {
+        console.error('Error checking stored query:', err);
+      }
+    };
+
+    checkForStoredQuery();
+  }, []); // Empty dependency array = run once on mount
 
   const handleSearch = async (query: string) => {
     setIsLoading(true)
     setError('')
+    setCurrentQuery(query)
 
     try {
       // Run all API calls in parallel for better performance
@@ -87,6 +122,7 @@ function App() {
         <SearchBar
           onSearch={handleSearch}
           isLoading={isLoading}
+          initialQuery={currentQuery}
         />
 
         {error && !isLoading && (
