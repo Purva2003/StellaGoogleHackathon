@@ -15,7 +15,7 @@ function createFloatingButton(): HTMLElement {
   button.setAttribute('role', 'button');
   button.setAttribute('aria-label', 'Search with Stella AI');
 
-  // Add the logo image
+  // Add the Stella logo
   const logoUrl = chrome.runtime.getURL('stella-logo.png');
   const img = document.createElement('img');
   img.src = logoUrl;
@@ -59,27 +59,30 @@ function positionFloatingButton() {
 
   if (!floatingButton) return;
 
-  // Position to the right of the selection with some offset
-  const buttonSize = 48; // Button size in pixels
-  const offset = 10; // Offset from selection
+  // Position above the selection, aligned to the right end
+  const buttonSize = 36; // Button size in pixels (matches logo size)
+  const offsetAbove = 6; // Space above the selection
+  const offsetFromEnd = 4; // Small offset from the end of selection
 
-  let left = rect.right + offset;
-  let top = rect.top + (rect.height / 2) - (buttonSize / 2);
+  // Align the button to the right end of the selection
+  let left = rect.right - buttonSize - offsetFromEnd;
+
+  // Position above the selection
+  let top = rect.top - buttonSize - offsetAbove;
 
   // Ensure button stays within viewport
   const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
 
   // Adjust horizontal position if too close to edge
-  if (left + buttonSize + offset > viewportWidth) {
-    left = rect.left - buttonSize - offset;
+  if (left < 10) {
+    left = 10; // Minimum left padding
+  } else if (left + buttonSize + 10 > viewportWidth) {
+    left = viewportWidth - buttonSize - 10; // Minimum right padding
   }
 
-  // Adjust vertical position if too close to edge
-  if (top < offset) {
-    top = offset;
-  } else if (top + buttonSize + offset > viewportHeight) {
-    top = viewportHeight - buttonSize - offset;
+  // If not enough space above, position below the selection instead
+  if (top < 10) {
+    top = rect.bottom + offsetAbove;
   }
 
   // Account for scroll position
