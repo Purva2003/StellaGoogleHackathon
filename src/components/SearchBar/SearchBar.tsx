@@ -126,27 +126,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
           )}
         </button>
       </form>
-
-      {/* Search Suggestions (Optional) */}
-      <div className="search-suggestions">
-        <p className="suggestions-label">Quick searches:</p>
-        <div className="suggestion-chips">
-          {['Latest AI trends', 'Web development tips', 'Data science tutorials'].map((suggestion, index) => (
-            <button
-              key={index}
-              type="button"
-              className="suggestion-chip"
-              onClick={() => {
-                setQuery(suggestion);
-                onSearch(suggestion);
-              }}
-              disabled={isLoading}
-            >
-              {suggestion}
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

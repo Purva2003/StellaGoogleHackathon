@@ -3,6 +3,7 @@
 /// <reference types="chrome"/>
 
 import './selection-handler.css';
+import { extractPageContext } from './context-extractor';
 
 let floatingButton: HTMLElement | null = null;
 let selectionTimeout: number | null = null;
@@ -30,7 +31,7 @@ function createFloatingButton(): HTMLElement {
   return button;
 }
 
-// Handle button click - send message to background script
+// Handle button click - send message to background script WITH CONTEXT
 function handleButtonClick(e: Event) {
   e.preventDefault();
   e.stopPropagation();
@@ -38,11 +39,29 @@ function handleButtonClick(e: Event) {
   const selectedText = window.getSelection()?.toString().trim();
 
   if (selectedText) {
-    // Send message to background script to open side panel
-    chrome.runtime.sendMessage({
-      type: 'OPEN_SIDE_PANEL_WITH_QUERY',
-      query: selectedText
-    });
+    try {
+      // Extract page context for the selection
+      const pageContext = extractPageContext(selectedText);
+
+      // Send message to background script with both selection and context
+      chrome.runtime.sendMessage({
+        type: 'OPEN_SIDE_PANEL_WITH_QUERY',
+        query: selectedText,
+        pageContext: pageContext
+      });
+
+      console.log('Sent selection with context:', {
+        selection: selectedText.substring(0, 50) + '...',
+        contextSize: pageContext.contextSize
+      });
+    } catch (error) {
+      console.error('Error extracting context:', error);
+      // Fallback: send without context
+      chrome.runtime.sendMessage({
+        type: 'OPEN_SIDE_PANEL_WITH_QUERY',
+        query: selectedText
+      });
+    }
 
     // Hide the button after clicking
     hideFloatingButton();
