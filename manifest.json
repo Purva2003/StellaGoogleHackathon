@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Stella AI Assistant",
-    "version": "1.0.0",
-    "description": "AI-powered study assistant using Google Gemini.",
+    "name": "Stella AI Assistant BETA",
+    "version": "0.9.0",
+    "description": "THIS EXTENSION IS FOR BETA TESTING. Context-aware AI study assistant with smart search powered by Google Gemini.",
     "icons": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",
