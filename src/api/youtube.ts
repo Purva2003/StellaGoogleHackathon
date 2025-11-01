@@ -59,6 +59,7 @@ export async function searchVideos(query: string, maxResults: number = 5): Promi
       key: YOUTUBE_API_KEY,
       order: 'relevance',
       videoEmbeddable: 'true',
+      relevanceLanguage: 'en',  // Prioritize English videos
       safeSearch: 'moderate'
     });
 

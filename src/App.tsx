@@ -11,7 +11,7 @@ import type { SearchResultData } from "./components/ResultsSection/SearchResults
 import type { EnrichedSelectionData } from "./types/context";
 
 // Import API utilities
-import { summarizeText, summarizeWithContext } from "./api/gemini";
+import { summarizeText, summarizeWithContext, generateSmartSearchQueries } from "./api/gemini";
 import { searchVideos, generateVideoSearchQuery } from "./api/youtube";
 import { searchRelatedPages, generateSearchQuery } from "./api/customSearch";
 
@@ -103,7 +103,24 @@ function App() {
     setCurrentQuery(enrichedData.selectionText);
 
     try {
-      // Run all API calls in parallel for better performance
+      // Step 1: Generate AI-optimized search queries (fast, ~0.5-1s)
+      let youtubeQuery = generateVideoSearchQuery(enrichedData.selectionText); // Fallback
+      let googleQuery = generateSearchQuery(enrichedData.selectionText);       // Fallback
+
+      try {
+        const smartQueries = await generateSmartSearchQueries(
+          enrichedData.selectionText,
+          enrichedData.pageContext
+        );
+        youtubeQuery = smartQueries.youtubeQuery;
+        googleQuery = smartQueries.googleQuery;
+        console.log('✅ Using AI-generated queries:', smartQueries);
+      } catch (queryError) {
+        console.warn('⚠️ Smart query generation failed, using fallback:', queryError);
+        // Continue with fallback queries (already set above)
+      }
+
+      // Step 2: Run all searches in parallel with optimized queries
       const [summary, videos, webResults] = await Promise.allSettled([
         // 1. Get context-aware AI summary from Gemini
         summarizeWithContext(
@@ -111,11 +128,11 @@ function App() {
           enrichedData.pageContext
         ),
 
-        // 2. Search YouTube videos
-        searchVideos(generateVideoSearchQuery(enrichedData.selectionText), 5),
+        // 2. Search YouTube videos with AI-optimized query
+        searchVideos(youtubeQuery, 5),
 
-        // 3. Search related web pages
-        searchRelatedPages(generateSearchQuery(enrichedData.selectionText), 5),
+        // 3. Search related web pages with AI-optimized query
+        searchRelatedPages(googleQuery, 5),
       ]);
 
       // Handle AI summary
